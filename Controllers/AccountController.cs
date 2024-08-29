@@ -5,6 +5,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using webApi.Dtos;
+using webApi.Errors;
+using webApi.Extensions;
 using webApi.Interfaces;
 using webApi.Modals;
 
@@ -24,10 +26,18 @@ namespace webApi.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginReqDto loginReqDto)
         {
+            ApiError apiError;
+
+            if(loginReqDto.Email.IsEmpty() || loginReqDto.Password.IsEmpty())
+            {
+                apiError = new(BadRequest().StatusCode, "User email or password can't be empty.");
+                return BadRequest(apiError);
+            }
             User dbUser =  await global.UserRepository.Authentication(loginReqDto);
             if (dbUser == null)
             {
-                throw new UnauthorizedAccessException("User Email or Password is wrong");
+                apiError = new(Unauthorized().StatusCode, "Invalid user email or password" );
+                return Unauthorized(apiError);
             }
             LoginResDto userRes = new()
             {
@@ -41,16 +51,30 @@ namespace webApi.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterUserDto registerUserDto)
         {
+            ApiError apiError;
             if(await global.UserRepository.AlreadyRegistered(registerUserDto.Email))
             {
-                return StatusCode(500, "User already exists");
-            } else
+
+                apiError = new(BadRequest().StatusCode, "User already exists");
+                return BadRequest(apiError);
+            } 
+
+            global.UserRepository.Register(registerUserDto);
+            await global.SaveAsync();
+            LoginReqDto loginReqDto = new()
             {
-                global.UserRepository.Register(registerUserDto);
-                await global.SaveAsync();
-                return Ok("User registered");
-                
-            }
+                Email = registerUserDto.Email,
+                Password = registerUserDto.Password
+            };
+            User dbUser = await global.UserRepository.Authentication(loginReqDto);
+            LoginResDto userRes = new()
+            {
+                Email = dbUser.Email,
+                Token = CreateJWT(dbUser)
+            };
+
+            return Ok(userRes);
+            
         }
 
         private string CreateJWT(User user)
@@ -64,7 +88,7 @@ namespace webApi.Controllers
 
             var signingCredentials = new SigningCredentials(
                     key, SecurityAlgorithms.HmacSha256Signature
-                );
+            );
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {

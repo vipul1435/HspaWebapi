@@ -16,6 +16,9 @@ namespace webApi.Data
 
         public IUserRepository UserRepository => new UserRepository(dc);
 
+        public IPropertyRepository PropertyRepository => new PropertyRepository(dc);
+
+
         public async Task<bool> SaveAsync()
         {
             return await dc.SaveChangesAsync()>0;

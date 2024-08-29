@@ -10,7 +10,11 @@ namespace webApi.Errors
 
         public override string ToString()
         {
-            return JsonSerializer.Serialize(this);
+            var options = new JsonSerializerOptions()
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+            return JsonSerializer.Serialize(this,options);
         }
     }
 }
