@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using webApi.Errors;
 using webApi.Interfaces;
 using webApi.Modals;
 
@@ -32,6 +33,17 @@ namespace webApi.Data.Repo
                 .Include(p=>p.City)
                 .ToListAsync();
             return properties;
+        }
+
+        public async Task<Property> GetPropertyDetailAsync(int id)
+        {
+            var property = await dc.Properties
+                .Where(p => p.Id == id)
+                .Include(p => p.PropertyType)
+                .Include(p => p.FunrnishedType)
+                .Include(p => p.City)
+                .FirstAsync();
+            return property;
         }
     }
 }

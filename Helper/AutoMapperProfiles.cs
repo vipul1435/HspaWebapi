@@ -17,6 +17,19 @@ namespace webApi.Helper
             //but while create two map-> we can use reverse function for vice versa mapping
 
             CreateMap<City, CityDto>().ReverseMap();
+
+            CreateMap<Property, PropertyListDto>()
+                .ForMember(d => d.City, opt => opt.MapFrom(s => s.City.Name))
+                .ForMember(d => d.Country, opt => opt.MapFrom(s => s.City.Country))
+                .ForMember(d => d.FunrnishedType, opt => opt.MapFrom(s => s.FunrnishedType.Name))
+                .ForMember(d => d.PropertyType, opt => opt.MapFrom(s => s.PropertyType.Name));
+
+            CreateMap<Property, PropertyDetailDto>()
+                .ForMember(d => d.City, opt => opt.MapFrom(s => s.City.Name))
+                .ForMember(d => d.Country, opt => opt.MapFrom(s => s.City.Country))
+                .ForMember(d => d.FunrnishedType, opt => opt.MapFrom(s => s.FunrnishedType.Name))
+                .ForMember(d => d.PropertyType, opt => opt.MapFrom(s => s.PropertyType.Name));
+
         }
     }
 }
