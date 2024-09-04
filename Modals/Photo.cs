@@ -5,6 +5,7 @@ namespace webApi.Modals
     [Table("Photos")]
     public class Photo:BaseEntity
     {
+        public required string PublicId { get; set; }
         public required string ImageUrl { get; set; }
         public bool IsPrimary { get; set; }
         public int PropertyId { get; set; }

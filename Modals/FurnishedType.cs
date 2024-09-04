@@ -2,7 +2,7 @@
 
 namespace webApi.Modals
 {
-    public class FunrnishedType:BaseEntity
+    public class FurnishedType:BaseEntity
     {
         public string Name { get; set; }
     }

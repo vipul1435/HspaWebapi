@@ -41,6 +41,7 @@ namespace webApi.Controllers
             }
             LoginResDto userRes = new()
             {
+                Id = dbUser.Id,
                 Email = dbUser.Email,
                 Token = CreateJWT(dbUser)
             };
@@ -69,6 +70,7 @@ namespace webApi.Controllers
             User dbUser = await global.UserRepository.Authentication(loginReqDto);
             LoginResDto userRes = new()
             {
+                Id = dbUser.Id,
                 Email = dbUser.Email,
                 Token = CreateJWT(dbUser)
             };
@@ -93,7 +95,7 @@ namespace webApi.Controllers
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddMinutes(1),
+                Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = signingCredentials
             };
 

@@ -18,6 +18,9 @@ namespace webApi.Data
 
         public IPropertyRepository PropertyRepository => new PropertyRepository(dc);
 
+        public IFurnishedTypeRepository FurnishedTypeRepository => new FurnishedTypeRepository(dc);
+
+        public IPropertyTypeRepository PropertyTypeRepository => new PropertyTypeRepository(dc);
 
         public async Task<bool> SaveAsync()
         {

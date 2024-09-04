@@ -18,5 +18,7 @@ namespace webApi.Dtos
         public string GatedCommunity { get; set; }
         public string MainEntrance { get; set; }
         public string Description { get; set; }
+        public ICollection<PhotoDto> Photos { get; set; }
+        public int PostedBy { get; set; }
     }
 }

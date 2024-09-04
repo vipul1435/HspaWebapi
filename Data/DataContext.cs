@@ -15,7 +15,7 @@ namespace webApi.Data
 
         public DbSet<PropertyType> PropertyTypes { get; set; }
 
-        public DbSet<FunrnishedType> FunrnishedTypes { get; set; }
+        public DbSet<FurnishedType> FurnishedTypes { get; set; }
 
 
     }

@@ -23,6 +23,7 @@ namespace webApi.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetCities()
         {
             var cities = await global.CityRepository.GetCitiesAsync();

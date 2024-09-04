@@ -6,6 +6,6 @@
 
         public DateTime LastUpdatedOn { get; set; } = DateTime.UtcNow;
 
-        public int LastUpdatedBy { get; set; }
+        public int LastUpdatedBy { get; set; }=1;
     }
 }

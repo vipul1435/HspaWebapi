@@ -16,7 +16,7 @@ namespace webApi.Data.Repo
 
         public void AddProperty(Property property)
         {
-            throw new NotImplementedException();
+            dc.Properties.Add(property);
         }
 
         public void DeleteProperty(int id)
@@ -30,6 +30,7 @@ namespace webApi.Data.Repo
                 .Where(p=>p.SellOrRent==sellOrRent)
                 .Include(p => p.PropertyType)
                 .Include(p=>p.FunrnishedType)
+                .Include(p => p.Photos)
                 .Include(p=>p.City)
                 .ToListAsync();
             return properties;
@@ -41,8 +42,18 @@ namespace webApi.Data.Repo
                 .Where(p => p.Id == id)
                 .Include(p => p.PropertyType)
                 .Include(p => p.FunrnishedType)
+                .Include(p=>p.Photos)
                 .Include(p => p.City)
-                .FirstAsync();
+                .FirstOrDefaultAsync();
+            return property;
+        }
+
+        public async Task<Property> GetPropertyPhotosDetailAsync(int id)
+        {
+            var property = await dc.Properties
+                .Where(p => p.Id == id)
+                .Include(p => p.Photos)
+                .FirstOrDefaultAsync();
             return property;
         }
     }

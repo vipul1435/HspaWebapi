@@ -8,6 +8,9 @@
 
         IPropertyRepository PropertyRepository { get; }
 
+        IFurnishedTypeRepository FurnishedTypeRepository { get; }
+
+        IPropertyTypeRepository PropertyTypeRepository { get; }
         Task<bool> SaveAsync();
 
     }

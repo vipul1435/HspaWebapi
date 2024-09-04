@@ -6,6 +6,8 @@ using webApi.Data;
 using webApi.Helper;
 using webApi.Interfaces;
 using webApi.Middlewares;
+using dotenv.net;
+using webApi.Data.Repo;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,9 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("Default") ;
 
 // Add services to the container.
+
+DotEnv.Load(options: new DotEnvOptions(probeForEnv: true));
+
 
 builder.Services.AddDbContext<DataContext>(options => { options.UseSqlServer(connectionString);});
 
@@ -26,8 +31,11 @@ builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 builder.Services.AddCors();
 
 
+
 //add the interface to the application
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+builder.Services.AddScoped<IPhotoService, PhotoService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
